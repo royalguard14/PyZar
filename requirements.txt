@@ -2,3 +2,4 @@ Flask
 Flask-SQLAlchemy
 pyinstaller
 flask-login
+firebase-admin
