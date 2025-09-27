@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session
 from app.routes.helpers import get_all_settings
-from app.routes.decorators import login_required, require_module
-
+from flask_login import login_required
+from app.routes.decorators import require_module
 
 core_bp = Blueprint('core', __name__)
 
@@ -13,7 +13,7 @@ def index():
         return render_template("login.html", settings=settings)
     return render_template("home.html", settings=settings)
 
-@core_bp.route("/dashboard")
+@core_bp.route('/dashboard')
 @login_required
 def dashboard():
     return render_template("dashboard.html")

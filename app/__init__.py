@@ -1,6 +1,6 @@
-from flask import Flask, session
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from config import Config
 
 db = SQLAlchemy()
@@ -24,12 +24,14 @@ def create_app():
     @app.context_processor
     def inject_globals():
         modules = Module.query.all()
-        user = User.query.get(session.get('id')) if session.get('id') else None
-        user_modules = user.role.modules if user and user.role else []
+        user_modules = []
+        if current_user.is_authenticated and current_user.role:
+            user_modules = current_user.role.modules
 
         settings = {s.function_desc: s.function for s in Setting.query.all()}
         return dict(modules=modules, user_modules=user_modules, settings=settings)
 
+    # ⬇️ Unindented correctly (part of create_app, not inject_globals)
     from app.routes import blueprints
     for bp in blueprints:
         app.register_blueprint(bp)

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 from app.models import User
 from werkzeug.security import check_password_hash
 from app.routes.helpers import get_all_settings
@@ -14,6 +14,7 @@ def login():
         return redirect(url_for('core.dashboard'))
 
     if request.method == 'POST':
+
         username_or_email = request.form['username']
         password = request.form['password']
 
